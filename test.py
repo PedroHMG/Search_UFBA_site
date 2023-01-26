@@ -44,7 +44,7 @@ all_pd_data = pd.DataFrame()
 
 
 for csv_file in dic:
-    temp_read = pd.read_csv('csv_files\\Collegiate_101.csv', encoding = "ISO-8859-1", index_col=[0])
+    temp_read = pd.read_csv(f'csv_files\\{csv_file}', encoding = "ISO-8859-1", index_col=[0], dtype={'Turma': str})
     all_pd_data = pd.concat([all_pd_data, temp_read])
 
 
