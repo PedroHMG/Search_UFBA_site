@@ -35,6 +35,16 @@ class All_collegiate(Base):
         return "Next time"
 
 
+
+class Subjects(Base):
+    __tablename__ = 'Subjects'
+    id = Column('Subject_id', Integer, primary_key=True)
+    subject = Column('Subject', String)
+
+    def __init__(self, subject):
+        self.subject = subject
+
+
 Base.metadata.create_all(bind=engine)
 
 Session = sessionmaker(bind=engine)
@@ -55,6 +65,15 @@ for csv_file in dic:
 all_pd_data['Disp'] = all_pd_data['Vagas Ofe'] - all_pd_data['Pedidos']
 
 
+all_subject = all_pd_data.loc[:, ['Disciplina']].drop_duplicates().sort_values('Disciplina').reset_index(drop=True)
+print(all_subject)
+
+
+y = 0
+for item in range(len(all_subject.values)):
+    df_row = all_subject.iloc[[item]]
+    add_row = Subjects(str(df_row['Disciplina'].values[0]))
+    session.add(add_row)
 
 y = 0
 for item in range(len(all_pd_data.values)):
