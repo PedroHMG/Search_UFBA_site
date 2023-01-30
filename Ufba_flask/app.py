@@ -5,9 +5,10 @@ from sqlalchemy.ext.automap import automap_base
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'test'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////Users/goesp/Vs_codes/Ufba_search/Ufba_flask/data/db.sqlite3'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////Users/goesp/Vs_codes/Search_UFBA/Ufba_flask/data/db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
 
 
 class Collegiate(db.Model):
@@ -26,7 +27,7 @@ class Collegiate(db.Model):
 @app.route('/search', methods=['POST', 'GET'])
 def search_data_subject():
     if request.method == 'POST':
-        subject_search = request.form['subject']
+        subject_search = request.form['subject'].upper()
         search_by_subject = Collegiate.query.filter_by(subject=subject_search).order_by(Collegiate.available.desc()).all()
         return render_template(r'search_data/show_data.html', data=search_by_subject)
     elif request.method == 'GET':
