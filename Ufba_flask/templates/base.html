@@ -13,7 +13,7 @@
   </head>
   <header>
     <form action="{{ url_for('search_data_subject') }}" method="post">
-      <label for="exampleDataList" class="form-label">Datalist example</label>
+      <label for="exampleDataList" class="form-label"></label>
       <input class="form-control" list="datalistOptions" id="genera-list-search-bar" placeholder="Type to search..." name="subject">
       <datalist id="datalistOptions">
         <option value="San Francisco">
@@ -25,6 +25,9 @@
     </form>
   </header>
   <body>
-    {% block content %}{% endblock %} 
+    <div class="container table-responsive p-10">
+      {% block content %}{% endblock %} 
+    </div>
+    {% block modal %}{% endblock %} 
   </body>
 </html>

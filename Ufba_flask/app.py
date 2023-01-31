@@ -29,10 +29,13 @@ def search_data_subject():
     if request.method == 'POST':
         subject_search = request.form['subject'].upper()
         search_by_subject = Collegiate.query.filter_by(subject=subject_search).order_by(Collegiate.available.desc()).all()
-        return render_template(r'search_data/show_data.html', data=search_by_subject)
+        return render_template(r'show_data.html', data=search_by_subject, subject_search=subject_search)
     elif request.method == 'GET':
-        return render_template(r'search_data/show_data.html')
+        return render_template(r'show_data.html')
 
+@app.route('/search/<int:row_id>')
+def modal_popup(row_id):
+    return render_template(r'modal.html')
     
 if __name__ == '__main__':
     app.run(debug=True)

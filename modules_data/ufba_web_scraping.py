@@ -2,10 +2,9 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 import sys
+import time
 
 
-
-'''
 def find_all_links(soup, text, https_link='https://supac.ufba.br/'):
     all_links = []
     for a in soup.find_all('a', href=True):
@@ -35,20 +34,25 @@ for area_link in find_all_links(doc, text_area):
     for item in find_all_links(doc, text_course, https_set):
         data_links.append(item)
 
-sys.setrecursionlimit(10000)
 
-url = data_links[0]
-'''
+pd.set_option('display.max_rows', 500)
 
-pd.set_option('display.max_rows', None)
+data_subject_week = pd.DataFrame()
+for link in data_links:
+    time.sleep(0.1)
+    data = pd.read_html(link, flavor='bs4', encoding='ISO-8859-1', header=[1])[0]
+    data = data.dropna(how='all').fillna(method='ffill')
+    data_subject_week = pd.concat([data_subject_week, data])
 
-test = pd.read_html('https://supac.ufba.br/sites/supac.ufba.br/files/118_16.html', flavor='bs4', encoding='ISO-8859-1', header=[1])[0]
 
-test = test.dropna(how='all').fillna(method='ffill')
+data_subject_week['Turma'] = data_subject_week['Turma'].astype(int)
+data_subject_week = data_subject_week.astype({'Turma': str, 'Vagas Ofe': 'int32'})
+data_subject_week.drop_duplicates(inplace=True)
 
-print(test)
+divided_column = data_subject_week['Disciplina'].str.split(pat=' - ', n=1, expand=True)
+divided_column.columns = ['Código', 'Disciplina']
+data_subject_week.drop(columns='Disciplina', inplace=True)
+data_subject_week = pd.concat([divided_column,data_subject_week], axis=1)
 
-'''
-for item in test:
-    print(item)
-'''
+print(data_subject_week)
+data_subject_week.to_csv(r'Ufba_flask\data\subject_week.csv')

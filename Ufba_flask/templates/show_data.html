@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+  .clickable{
+    cursor: pointer;
+  }
+</style>
+
+  <div class="container text-center my-10">
+    <h5>{{subject_search}}</h5>
+  </div>
+  <table id="example" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+    <thead>
+      <tr>
+        <!--<th class="th-sm">Colegiado</th>-->
+        <!--<th class="th-sm">Matéria</th>-->
+        <th class="th-sm">Turma</th>
+        <th class="th-sm">Vagas Ofer</th>
+        <th class="th-sm">Demanda vagas</th>
+        <th class="th-sm">Disp</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in data %}
+        <tr class="clickable"
+        onclick="window.location='{{url_for('modal_popup', row_id=item.row_id)}}'">
+        <!--<tr class='clickable-row' data-href="{{url_for('modal_popup', row_id=item.row_id)}}">-->
+          <!--<td>{{ item.collegiate }}</td>-->
+          <!--<td>{{ item.subject }}</td>-->
+          <td>{{ item.classes }}</td>
+          <td>{{ item.offered }}</td>
+          <td>{{ item.demand }}</td>
+          <td>{{ item.available }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+{% block modal %}{% endblock %}
+
+
+<script>
+  jQuery(document).ready(function($) {
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+    });
+  });
+</script>
+

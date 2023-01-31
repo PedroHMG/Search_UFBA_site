@@ -36,8 +36,8 @@ class All_collegiate(Base):
 
 
 
-class Subjects(Base):
-    __tablename__ = 'Subjects'
+class Week_subject(Base):
+    __tablename__ = 'Week_subject'
     id = Column('Subject_id', Integer, primary_key=True)
     subject = Column('Subject', String)
 
@@ -54,9 +54,6 @@ session = Session()
 
 dic = os.listdir(r'Ufba_flask\csv_files')
 all_pd_data = pd.DataFrame()
-
-#print(dic)
-
 
 for csv_file in dic:
     temp_read = pd.read_csv(f'Ufba_flask\\csv_files\\{csv_file}', encoding = "ISO-8859-1", index_col=[0], dtype={'Turma': str})
