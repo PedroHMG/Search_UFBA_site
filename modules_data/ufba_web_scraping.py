@@ -3,6 +3,30 @@ import requests
 import pandas as pd
 import sys
 import time
+from sqlalchemy import create_engine, Column, Integer, CHAR, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+import pandas as pd
+import os
+
+
+
+
+
+
+engine = create_engine('sqlite:///./Ufba_flask/data/db.sqlite3', echo=True)
+conn = engine.connect()
+
+
+
+
+
+
+
+
+
+
+
 
 
 def find_all_links(soup, text, https_link='https://supac.ufba.br/'):
@@ -50,9 +74,13 @@ data_subject_week = data_subject_week.astype({'Turma': str, 'Vagas Ofe': 'int32'
 data_subject_week.drop_duplicates(inplace=True)
 
 divided_column = data_subject_week['Disciplina'].str.split(pat=' - ', n=1, expand=True)
-divided_column.columns = ['Código', 'Disciplina']
+divided_column.columns = ['Codigo', 'Disciplina']
 data_subject_week.drop(columns='Disciplina', inplace=True)
 data_subject_week = pd.concat([divided_column,data_subject_week], axis=1)
+
+data_subject_week.rename(columns={"Horário": "Horario"}, inplace=True)
+
+data_subject_week['Horario'] = data_subject_week['Horario'].str.replace('às','as')
 
 print(data_subject_week)
 data_subject_week.to_csv(r'Ufba_flask\data\subject_week.csv')

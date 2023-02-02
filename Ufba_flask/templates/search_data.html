@@ -24,7 +24,8 @@
     <tbody>
       {% for item in data %}
         <tr class="clickable"
-        onclick="window.location='{{url_for('modal_popup', row_id=item.row_id, subject_in_box=subject_search)}}'">
+        onclick="window.location='{{url_for('modal_popup', row_id=item.row_id)}}'">
+        <!--<tr class='clickable-row' data-href="{{url_for('modal_popup', row_id=item.row_id)}}">-->
           <!--<td>{{ item.collegiate }}</td>-->
           <!--<td>{{ item.subject }}</td>-->
           <td>{{ item.classes }}</td>
@@ -37,8 +38,7 @@
   </table>
 {% endblock %}
 
-{% block modal %}
-{% endblock %}
+{% block modal %}{% endblock %}
 
 
 <script>
