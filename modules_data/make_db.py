@@ -5,13 +5,13 @@ import pandas as pd
 import os
 import time
 
-engine = create_engine('sqlite:///./Ufba_flask/data/db.sqlite3')
+engine = create_engine('sqlite:///./Ufba_flask/data/db.sqlite3?charset=iso-8859-1')
 conn = engine.connect()
 
 Base = declarative_base()
 
 collegiate_week_subject = Table( 
-    "association_week_colegiate",
+    "Association_week_colegiate",
     Base.metadata,
     Column('Collegiate_row_id', Integer, ForeignKey('Collegiate.Row_id')),
     Column('week_subject_id', Integer, ForeignKey('Week_subject.Subject_id'))
@@ -38,7 +38,7 @@ class All_collegiate(Base):
         self.available = available
 
     def __repr__(self):
-        return "working on..."
+        return f'Row ID: {self.row_id}, Collegiate: {self.collegiate}, Subject: {self.subject}, Class: {self.classes}'
 
 
 
@@ -46,11 +46,11 @@ class Week_subject(Base):
     __tablename__ = 'Week_subject'
     id = Column('Subject_id', Integer, primary_key=True)
     code = Column('Subject', String)
-    subject_name = Column('Subject_name', String)
+    subject_name = Column('Subject_name', String(convert_unicode=True))
     classes = Column('Classes', String)
     day_of_week = Column('Day_of_week', String)
-    schedule = Column('Schedule', String)
-    professor = Column('Professor', String)
+    schedule = Column('Schedule', String(convert_unicode=True))
+    professor = Column('Professor', String(convert_unicode=True))
 
     def __init__(self, code, subject_name, classes, day_of_week, schedule, professor):
         self.code = code
@@ -63,7 +63,7 @@ class Week_subject(Base):
     def __repr__(self):
         return f'<id: {self.id}> <code: {self.code}> <subject_name: {self.subject_name}> <classes: {self.classes}> <day_of_week: {self.day_of_week}> <schedule: {self.schedule}> <professor:  {self.professor}>'
 
-
+Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -122,7 +122,9 @@ for colle in session.query(All_collegiate):
         Week_subject.code.like(colle.subject),
         Week_subject.classes.like(colle.classes)
     )
+    test = []
     for item in query_week:
+        test.append(item.day_of_week)
         colle.week.append(item)
 
         

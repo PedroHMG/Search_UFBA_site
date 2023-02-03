@@ -9,11 +9,43 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+					<h1 class="modal-title fs-5" id="exampleModalLabel">Informações</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					...
+					<div class="container">
+            {% if row_selected.week %}
+              <div class="container">
+                {{ row_selected.subject }}
+              </div>
+              <div class="container">
+                {{ row_selected.week[0].subject_name }}
+              </div>
+              <div class="container">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">Semana</th>
+                      <th scope="col">Horário</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for word in row_selected.week %}
+                      <tr>                        
+                        <td>{{ word.day_of_week }}</td>
+                        <td>{{ word.schedule }}</td>
+                        <td>{{ word.professor }}</td>                        
+                      </tr>
+                    {% endfor %}
+              {% else %}
+              <div class="container">
+                <h5 class="text-center pt-40">Fora de registro</h5>
+              </div>
+              {% endif %}
+                </tbody>
+              </table>
+            </div>
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -82,5 +82,7 @@ data_subject_week.rename(columns={"Horário": "Horario"}, inplace=True)
 
 data_subject_week['Horario'] = data_subject_week['Horario'].str.replace('às','as')
 
+data_subject_week = data_subject_week.drop_duplicates(subset=['Turma', 'Dia', 'Horario', 'Docente'])
+
 print(data_subject_week)
 data_subject_week.to_csv(r'Ufba_flask\data\subject_week.csv')

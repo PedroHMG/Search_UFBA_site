@@ -1,12 +1,32 @@
-import pandas as pd
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy 
 
-test = pd.read_csv(r'Ufba_flask\data\subject_week.csv', index_col=[0])
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
 
-a = test['Disciplina'].str.split(pat=' - ', n=1, expand=True)
-a.columns = ['Código', 'Disciplina']
+user_channel = db.Table('user_channel',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('channel_id', db.Integer, db.ForeignKey('channel.id'))
+)
 
-test.drop(columns='Disciplina', inplace=True)
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20))
+    following = db.relationship('Channel', secondary=user_channel, backref='followers')
 
-test = pd.concat([a,test], axis=1)
+    def __repr__(self):
+        return f'<User: {self.name}>'
 
-print(test)
+class Channel(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20))
+
+    def __repr__(self):
+        return f'<Channel: {self.name}>'
+
+db.create_all()
+
+if __name__ == '__main__':
+    app.run(debug=True)
