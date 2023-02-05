@@ -5,7 +5,7 @@ import pandas as pd
 import os
 import time
 
-engine = create_engine('sqlite:///./Ufba_flask/data/db.sqlite3?charset=iso-8859-1')
+engine = create_engine('sqlite:///./Ufba_flask/data/db.sqlite3?charset=iso-8859-1', encoding='iso-8859-1')
 conn = engine.connect()
 
 Base = declarative_base()
@@ -46,11 +46,11 @@ class Week_subject(Base):
     __tablename__ = 'Week_subject'
     id = Column('Subject_id', Integer, primary_key=True)
     code = Column('Subject', String)
-    subject_name = Column('Subject_name', String(convert_unicode=True))
+    subject_name = Column('Subject_name', String)
     classes = Column('Classes', String)
     day_of_week = Column('Day_of_week', String)
-    schedule = Column('Schedule', String(convert_unicode=True))
-    professor = Column('Professor', String(convert_unicode=True))
+    schedule = Column('Schedule', String)
+    professor = Column('Professor', String)
 
     def __init__(self, code, subject_name, classes, day_of_week, schedule, professor):
         self.code = code
@@ -79,10 +79,14 @@ for csv_file in dic:
 all_pd_data['Disp'] = all_pd_data['Vagas Ofe'] - all_pd_data['Pedidos']
 
 
-all_week_subject = pd.read_csv(r'Ufba_flask\data\subject_week.csv', encoding='ISO-8859-1', index_col=[0])
+
+all_week_subject = pd.read_csv(r'Ufba_flask\data\subject_week.csv', encoding='latin1', index_col=[0])
 all_week_subject['Turma'] = all_week_subject['Turma'].astype(int)
 all_week_subject['Turma'] = all_week_subject['Turma'].apply(lambda x: '{0:0>6}'.format(x))
 all_week_subject = all_week_subject.astype({'Turma': str, 'Vagas Ofe': 'int32'})
+
+pd.set_option('display.max_rows', None)
+print(all_week_subject)
 
 
 y = 0
@@ -126,8 +130,6 @@ for colle in session.query(All_collegiate):
     for item in query_week:
         test.append(item.day_of_week)
         colle.week.append(item)
-
-        
     
 session.commit()
 

@@ -11,22 +11,8 @@ import os
 
 
 
-
-
-
 engine = create_engine('sqlite:///./Ufba_flask/data/db.sqlite3', echo=True)
 conn = engine.connect()
-
-
-
-
-
-
-
-
-
-
-
 
 
 def find_all_links(soup, text, https_link='https://supac.ufba.br/'):
@@ -69,7 +55,7 @@ for link in data_links:
     data_subject_week = pd.concat([data_subject_week, data])
 
 
-data_subject_week['Turma'] = data_subject_week['Turma'].astype(int)
+data_subject_week['Turma'] = data_subject_week['Turma'].astype(int).apply(lambda x: '{0:0>6}'.format(x))
 data_subject_week = data_subject_week.astype({'Turma': str, 'Vagas Ofe': 'int32'})
 data_subject_week.drop_duplicates(inplace=True)
 
@@ -80,9 +66,12 @@ data_subject_week = pd.concat([divided_column,data_subject_week], axis=1)
 
 data_subject_week.rename(columns={"Horário": "Horario"}, inplace=True)
 
-data_subject_week['Horario'] = data_subject_week['Horario'].str.replace('às','as')
+#data_subject_week['Horario'] = data_subject_week['Horario'].str.replace('às','as')
 
 data_subject_week = data_subject_week.drop_duplicates(subset=['Turma', 'Dia', 'Horario', 'Docente'])
 
 print(data_subject_week)
-data_subject_week.to_csv(r'Ufba_flask\data\subject_week.csv')
+data_subject_week.to_csv(r'Ufba_flask\data\subject_week.csv', encoding='ISO-8859-1', index=False)
+
+#should add funcionalty to remove all duplicaded day of the week to one subject-class because of broken ufba site 
+#se o horário que finaliza for igual ao primeiro do outro adiciona um ao outro

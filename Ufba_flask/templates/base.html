@@ -19,14 +19,10 @@
   <div class="container">
     <form action="{{ url_for('search_data_subject') }}" method="post">
       <label for="exampleDataList" class="form-label"></label>
-      <input class="form-control" list="datalistOptions" id="genera-list-search-bar" placeholder="Type to search..."
-        name="subject">
-      <datalist id="datalistOptions">
-        <option value="San Francisco">
-        <option value="New York">
-        <option value="Seattle">
-        <option value="Los Angeles">
-        <option value="Chicago">
+      <input class="form-control" list="datalistOptions" id="genera-list-search-bar"
+        placeholder="Pesquise pela matéria. Ex: ENG001, ARQ010" name="subject">
+        </option>
+        </option>
       </datalist>
     </form>
   </div>
