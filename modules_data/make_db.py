@@ -5,7 +5,7 @@ import pandas as pd
 import os
 import time
 
-engine = create_engine('sqlite:///./Ufba_flask/data/db.sqlite3?charset=iso-8859-1', encoding='iso-8859-1')
+engine = create_engine('sqlite:///./data/db.sqlite3?charset=iso-8859-1', encoding='iso-8859-1')
 conn = engine.connect()
 
 Base = declarative_base()
@@ -80,7 +80,7 @@ all_pd_data['Disp'] = all_pd_data['Vagas Ofe'] - all_pd_data['Pedidos']
 
 
 
-all_week_subject = pd.read_csv(r'Ufba_flask\data\subject_week.csv', encoding='latin1', index_col=[0])
+all_week_subject = pd.read_csv(r'data\subject_week.csv', encoding='latin1', index_col=[0])
 all_week_subject['Turma'] = all_week_subject['Turma'].astype(int)
 all_week_subject['Turma'] = all_week_subject['Turma'].apply(lambda x: '{0:0>6}'.format(x))
 all_week_subject = all_week_subject.astype({'Turma': str, 'Vagas Ofe': 'int32'})

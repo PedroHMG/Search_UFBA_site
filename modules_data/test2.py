@@ -1,6 +1,6 @@
 import pandas as pd
 
-data_subject_week = pd.read_csv(r'Ufba_flask\data\subject_week.csv', encoding='ISO-8859-1')
+data_subject_week = pd.read_csv(r'data\subject_week.csv', encoding='ISO-8859-1')
 data_subject_week['Turma'] = data_subject_week['Turma'].astype(int).apply(lambda x: '{0:0>6}'.format(x))
 data_subject_week = data_subject_week.astype({'Turma': str, 'Vagas Ofe': 'int32'})
 
@@ -21,8 +21,8 @@ for item in range(len(data_subject_week.index) -1, 0, -1):
             data_subject_week.drop(item, inplace=True)
             x += 1
             
-print(data_subject_week)
-print(data_subject_week[data_subject_week.duplicated(subset=['Dia', 'Codigo', 'Turma', 'Docente'], keep=False)])
+#print(data_subject_week)
+#print(data_subject_week[data_subject_week.duplicated(subset=['Dia', 'Codigo', 'Turma', 'Docente'], keep=False)])
 
-data_subject_week.to_csv(r'Ufba_flask\data\subject_week.csv', encoding='ISO-8859-1')
+data_subject_week.to_csv(r'data\subject_week.csv', encoding='ISO-8859-1')
 print(x)

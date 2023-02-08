@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block home %}
+<style>
+  .clickable {
+    cursor: pointer;
+  }
+</style>
+
+<div class="d-flex mt-5 mb-3 d-lg-none justify-content-center">
+  <img src="{{ url_for('static', filename='/image/Trash_can_text_top.png') }}" class="rounded mx-auto d-block"
+    style="height: 250px;">
+</div>
+<div class="d-flex mt-5 mb-3 d-none d-lg-block justify-content-center">
+  <img src="{{ url_for('static', filename='/image/Trash_can_text1.png') }}" class="rounded mx-auto d-block"
+    style="height: 250px;">
+</div>
+
+
+<div class="container">
+  <div class="row">
+    <form action="{{ url_for('search_data_subject') }}" method="post">
+      <label for="exampleDataList" class="form-label"></label>
+      <input class="form-control" list="datalistOptions" id="genera-list-search-bar"
+        placeholder="Pesquise pela matéria. Ex: ENG001, ARQ010" name="subject">
+      </option>
+      </option>
+      </datalist>
+    </form>
+  </div>
+</div>
+
+<div class="container table-responsive p-1">
+</div>
+
+{% endblock %}

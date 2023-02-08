@@ -5,7 +5,7 @@ from sqlalchemy.ext.automap import automap_base
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'test'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////Users/goesp/Vs_codes/Search_UFBA/Ufba_flask/data/db.sqlite3?charset=iso-8859-1'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////Users/goesp/Vs_codes/Search_UFBA/data/db.sqlite3?charset=iso-8859-1'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -47,16 +47,15 @@ class Week_subject(db.Model):
 
 
 
-@app.route('/search', methods=['POST', 'GET'])
+@app.route('/home', methods=['POST', 'GET'])
 def search_data_subject():
     if request.method == 'POST':
         subject_search = request.form['subject'].upper()
         return redirect(url_for('show_data_subject', subject_in_box=subject_search))
     elif request.method == 'GET':
-        return render_template(r'base.html')
+        return render_template(r'home.html')
 
         
-
 
 @app.route('/search/<string:subject_in_box>', methods=['POST', 'GET'])
 def show_data_subject(subject_in_box):
@@ -75,5 +74,12 @@ def modal_popup(row_id, subject_in_box):
     row_selected = Collegiate.query.filter_by(row_id=row_id).first()
     return render_template('modal.html', data=search_by_subject, subject_search=subject_in_box, row_selected=row_selected)
     
+
+@app.route('/sobre')
+def about_section():
+    return render_template('about.html')
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)

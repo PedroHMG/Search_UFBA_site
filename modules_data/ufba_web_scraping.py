@@ -70,6 +70,30 @@ data_subject_week.rename(columns={"Horário": "Horario"}, inplace=True)
 
 data_subject_week = data_subject_week.drop_duplicates(subset=['Turma', 'Dia', 'Horario', 'Docente'])
 
+
+
+
+data_subject_week[['Inicio', 'Fim']] = data_subject_week['Horario'].str.split(' às ', expand=True)
+pd.set_option('display.max_rows', 500)
+
+x = 0
+for item in range(len(data_subject_week.index) -1, 0, -1):
+    first_row = data_subject_week.iloc[item]
+    second_row = data_subject_week.iloc[item - 1]
+    first_word = first_row['Inicio']
+    last_word = second_row['Fim']
+
+    if first_row.loc[['Codigo', 'Turma', 'Dia', 'Docente']].equals(second_row.loc[['Codigo', 'Turma', 'Dia', 'Docente']]):
+        if first_word == last_word:
+            data_subject_week.loc[item - 1, 'Fim'] = first_row.loc['Fim']
+            data_subject_week.drop(first_row, inplace=True)
+            x += 1
+            
+#print(data_subject_week)
+#print(data_subject_week[data_subject_week.duplicated(subset=['Dia', 'Codigo', 'Turma', 'Docente'], keep=False)])
+print(x)
+
+
 print(data_subject_week)
 data_subject_week.to_csv(r'Ufba_flask\data\subject_week.csv', encoding='ISO-8859-1', index=False)
 
